@@ -652,6 +652,19 @@ public static class TextureOps
 		string value = AJC.CallStatic<string>( "GetImageProperties", Context, imagePath );
 #elif !UNITY_EDITOR && UNITY_IOS
 		string value = _TextureOps_GetImageProperties( imagePath );
+#elif UNITY_EDITOR
+		string value = null;
+		Texture2D tex = null;
+		try
+		{
+			tex = TextureOps.LoadImage( imagePath );
+			value = $"{tex.width}>{tex.height}>>";
+		}
+		finally
+		{
+			if( tex )
+			UnityEngine.GameObject.DestroyImmediate( tex );
+		}
 #else
 		string value = null;
 #endif
